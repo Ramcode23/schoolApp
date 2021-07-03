@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'django.contrib.sites',
     
     'applications.schoolhouse',
     'applications.course',
@@ -44,17 +45,17 @@ INSTALLED_APPS = [
     'applications.student',
     'applications.subject',
     'applications.teacher',
+    'applications.user',
    'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
-     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    
-    
 ]
 
+AUTH_USER_MODEL = 'user.User'
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+SITE_ID = 1
 
 ROOT_URLCONF = 'school.urls'
 

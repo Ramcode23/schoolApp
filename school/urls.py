@@ -21,8 +21,8 @@ from django.urls.conf import re_path
 urlpatterns = [
  
     path('admin/', admin.site.urls),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+   path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include('applications.user.routers')),
     re_path('', include('applications.course.routers')),
     re_path('', include('applications.evaluation.routers')),
     re_path('', include('applications.subject.routers')),
