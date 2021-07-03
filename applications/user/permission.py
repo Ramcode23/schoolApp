@@ -52,7 +52,7 @@ class IsAdminTeacher(permissions.BasePermission):
         has_group_permission = _has_group_permission(request.user, self.required_groups)
         return request.user and has_group_permission
     
-class IsAdminTeacher(permissions.BasePermission):
+class IsAdminStudent(permissions.BasePermission):
         # group_name for super admin
       required_groups = ['admin','student']
 
