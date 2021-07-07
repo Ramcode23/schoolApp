@@ -39,12 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
      'django.contrib.sites',
     
-    'applications.schoolhouse',
     'applications.course',
-    'applications.evaluation',
-    'applications.student',
-    'applications.subject',
-    'applications.teacher',
+    'applications.lecture',
+    'applications.schoolhouse',
     'applications.user',
    'rest_framework',
     'rest_framework.authtoken',
@@ -66,7 +63,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 SITE_ID = 1
-
+APPEND_SLASH=False
 ROOT_URLCONF = 'school.urls'
 
 TEMPLATES = [

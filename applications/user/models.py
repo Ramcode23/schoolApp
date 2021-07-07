@@ -10,6 +10,7 @@ class User(AbstractUser):
     # TODO: Define fields here
     groups=models.ForeignKey(Group,on_delete=models.CASCADE)
     email=models.EmailField( max_length=50,unique=True)
+    image =models.ImageField( upload_to='images/user', height_field=None, width_field=None, max_length=None)
     
     REQUIRED_FIELDS = ['groups_id', 'email']
 

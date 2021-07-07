@@ -21,12 +21,9 @@ from django.urls.conf import re_path
 urlpatterns = [
  
     path('admin/', admin.site.urls),
-   path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include('applications.user.routers')),
     re_path('', include('applications.course.routers')),
-    re_path('', include('applications.evaluation.routers')),
-    re_path('', include('applications.subject.routers')),
-    re_path('', include('applications.teacher.routers')),
-    re_path('', include('applications.student.routers')),
     re_path('', include('applications.schoolhouse.routers')),
+    re_path('', include('applications.lecture.routers')),
 ]
