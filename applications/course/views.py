@@ -8,7 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import Course, Enrollment
 from ..user.models import User
-from .serializers import CourseSerializer, EnrollmentSerializer, EnrollmentUpsertSerializer
+from .serializers import CourseSerializer, CourseUpsertSerializer, EnrollmentSerializer, EnrollmentUpsertSerializer
 from ..user.permission import IsAdminStudent, IsAdminTeacher
 
 
@@ -16,6 +16,19 @@ class CouseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     authentication_classes = [TokenAuthentication]
+    
+    
+    def create(self, request):
+        serializer = CourseUpsertSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        course = Course.objects.create(
+        descirption=serializer.validated_data['descirption'],
+        image=serializer.validated_data['image'],
+        teacher=self.request.user)
+        course.save()
+        return Response(serializer.data) 
+
 
     def get_permissions(self):
         permission_classes = []
@@ -37,7 +50,8 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     
     def list(self, request):
-         queryset =Enrollment.objects.all()
+         
+         queryset =Enrollment.objects.filter(student__id=self.request.user.id)
          serializer = EnrollmentSerializer(queryset, many=True)
          return Response(serializer.data)
           

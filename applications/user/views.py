@@ -6,8 +6,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from .permission import IsAdminUser, IsLoggedInUserOrAdmin, IsAdminOrAnonymousUser
+from rest_framework.permissions import AllowAny, IsAuthenticated,IsAdminUser
+from .permission import  IsLoggedInUserOrAdmin, IsAdminOrAnonymousUser
 from .models import User
 from .serializers import UserSerializer
 
