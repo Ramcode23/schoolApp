@@ -3,12 +3,8 @@
 
 This a small backend coding in Django
 
-## Authors
 
-- [@Ramcode23](https://github.com/Ramcode23)
-
-  
-## Tech Stack
+  ## Tech Stack
 
 **Server:** Python, Django REST framework
 
