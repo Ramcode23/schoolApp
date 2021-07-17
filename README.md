@@ -15,7 +15,7 @@ This a small backend coding in Django
   
 ## ERD
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://github.com/Ramcode23/schoolApp/blob/main/doc/djangoschool2.png?text=App+Screenshot+Here)
 
   
 ## API Reference
