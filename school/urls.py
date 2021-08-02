@@ -17,6 +17,10 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import re_path
+from django.conf.urls import include, url
+from django.conf import settings
+from django.views.static import serve
+
 
 urlpatterns = [
  
@@ -26,4 +30,6 @@ urlpatterns = [
     re_path('', include('applications.course.routers')),
     re_path('', include('applications.schoolhouse.routers')),
     re_path('', include('applications.lecture.routers')),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})
 ]
+

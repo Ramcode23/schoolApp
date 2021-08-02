@@ -1,14 +1,19 @@
 
 from django.shortcuts import render
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
+
 # Create your views here.
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import Course, Enrollment
 from ..user.models import User
-from .serializers import CourseSerializer, CourseUpsertSerializer, EnrollmentSerializer, EnrollmentUpsertSerializer
+from .serializers import( CourseSerializer, 
+                         CourseUpsertSerializer, 
+                         EnrollmentSerializer,
+                         EnrollmentUpsertSerializer, 
+                         PaginationSerializer)
 from ..user.permission import IsAdminStudent, IsAdminTeacher
 
 
@@ -17,6 +22,10 @@ class CouseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     authentication_classes = [TokenAuthentication]
     
+    def list(self, request):
+        queryset = Course.objects.all()
+        serializer = CourseSerializer(queryset, many=True)
+        return Response(serializer.data)
     
     def create(self, request):
         serializer = CourseUpsertSerializer(data=request.data)
@@ -28,6 +37,22 @@ class CouseViewSet(viewsets.ModelViewSet):
         teacher=self.request.user)
         course.save()
         return Response(serializer.data) 
+
+
+    def retrieve(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+
+
+
 
 
     def get_permissions(self):
@@ -44,10 +69,21 @@ class CouseViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-
+class CourseList(viewsets.ViewSet):
+     authentication_classes = [TokenAuthentication]
+     pagination_class=PaginationSerializer
+     def list(self, request):  
+         queryset = Course.objects.all()
+         serializer = CourseSerializer(queryset, many=True)
+         return Response(serializer.data)
+          
+          
+ 
 class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
     authentication_classes = [TokenAuthentication]
+    pagination_class=PaginationSerializer
+    
     
     def list(self, request):
          
@@ -100,4 +136,8 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         elif self.action == 'destroy':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+ 
+ 
+
+ 
  
