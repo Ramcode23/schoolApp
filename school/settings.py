@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from re import T
 from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 
@@ -68,21 +69,42 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-     "http://localhost:4200", 
+     'http://localhost:4200', 
+   
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST=[
+   'http://localhost:4200',  
 ]
 
-CORS_ORIGIN_WHITELIST=[
-   "http://localhost:4200", 
-    
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
 ]
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+'courseId'
+]
+
+
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 2,
 }
 
 SITE_ID = 1

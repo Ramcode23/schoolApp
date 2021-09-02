@@ -1,5 +1,5 @@
 from ..course.models import Course
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
 
 from ..user.permission import IsAdminStudent,IsAdminTeacher,IsAdminUser
 from .serializers import LectureSerializer, LectureUpsertSerializer, LessonSerializer, LessonUpsertSerializer
@@ -20,7 +20,8 @@ class LectureViewSet(viewsets.ModelViewSet):
     
     
     def list(self, request):
-         queryset =Lecture.objects.filter(course__id=request.data['course'])
+         print(request.headers['courseId'])
+         queryset =Lecture.objects.filter(course__id=request.headers['courseId'])
          serializer = LectureSerializer(queryset, many=True)
          return Response(serializer.data)
           
@@ -67,6 +68,13 @@ class LectureViewSet(viewsets.ModelViewSet):
         elif self.action == 'destroy':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+
+
+
+
+
+
+
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()

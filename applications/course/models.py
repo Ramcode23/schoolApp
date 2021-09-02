@@ -5,7 +5,7 @@ from django.conf import settings
 class Course(models.Model):
     descirption=models.CharField( max_length=50)
     teacher=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image =models.ImageField( upload_to='images/courses', height_field=None, width_field=None, max_length=None)
+    image =models.ImageField( upload_to='images/courses', height_field=None, width_field=None, max_length=None,null=True, blank=True,default='images/courses/no-image.png')
    
     class Meta:
         verbose_name = ("Course")
