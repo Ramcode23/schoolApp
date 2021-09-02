@@ -70,12 +70,6 @@ class LectureViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
 
-
-
-
-
-
-
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
