@@ -10,12 +10,16 @@ class LectureSerializer(serializers.ModelSerializer):
      class Meta:
           model=Lecture
           fields=[
+               'id',
               'description',
               'course'
               ]
           
-class LectureUpsertSerializer(serializers.Serializer):
+class LectureInsertSerializer(serializers.Serializer):
       course = serializers.IntegerField()
+      description = serializers.CharField()
+    
+class LectureUpdatetSerializer(serializers.Serializer):
       description = serializers.CharField()
     
           

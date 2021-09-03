@@ -1,8 +1,12 @@
 from ..course.models import Course
-from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
+from rest_framework.generics import  get_object_or_404
 
 from ..user.permission import IsAdminStudent,IsAdminTeacher,IsAdminUser
-from .serializers import LectureSerializer, LectureUpsertSerializer, LessonSerializer, LessonUpsertSerializer
+from .serializers import( LectureSerializer,
+                         LectureInsertSerializer,
+                         LectureUpdatetSerializer, 
+                         LessonSerializer, 
+                         LessonUpsertSerializer)
 from .models import Lecture, Lesson
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -27,7 +31,7 @@ class LectureViewSet(viewsets.ModelViewSet):
           
 
     def create(self, request):
-        serializer = LectureUpsertSerializer(data=request.data)
+        serializer = LectureInsertSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         lecture = Lecture.objects.create(
@@ -47,11 +51,14 @@ class LectureViewSet(viewsets.ModelViewSet):
         
 
     def update(self, request, pk=None):
-        pass
+         serializer = LectureUpdatetSerializer(data=request.data)
+         serializer.is_valid(raise_exception=True)
+         lecture = Lecture.objects.get(pk=pk)
+         lecture.description=serializer.validated_data['description']
+         lecture.save() 
+         return Response(serializer.data) 
 
-    def partial_update(self, request, pk=None):
-        pass
-
+ 
     def destroy(self, request, pk=None):
         pass
      
