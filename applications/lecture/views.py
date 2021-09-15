@@ -4,7 +4,7 @@ from rest_framework.generics import  get_object_or_404
 from ..user.permission import IsAdminStudent,IsAdminTeacher,IsAdminUser
 from .serializers import( LectureSerializer,
                          LectureInsertSerializer,
-                         LectureUpdatetSerializer, 
+                         LectureUpdatetSerializer, LessonListSerializer, 
                          LessonSerializer, 
                          LessonUpsertSerializer)
 from .models import Lecture, Lesson
@@ -83,8 +83,8 @@ class LessonViewSet(viewsets.ModelViewSet):
     authentication_classes=[TokenAuthentication]
     
     def list(self, request):
-         queryset =Lesson.objects.filter(lecture__id=request.data['lecture'])
-         serializer = LessonSerializer(queryset, many=True)
+         queryset =Lesson.objects.filter(lecture__id=request.headers['lectureId'])
+         serializer = LessonListSerializer(queryset, many=True)
          return Response(serializer.data)
           
 
