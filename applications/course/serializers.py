@@ -1,4 +1,5 @@
 
+
 from .models import Course, Enrollment
 from rest_framework import serializers
 from ..user.serializers import UserSerializer
@@ -44,4 +45,4 @@ class PaginationSerializer(pagination.PageNumberPagination):
      max_page_size=10
      page_query_param = 'p'
         
-        
+    

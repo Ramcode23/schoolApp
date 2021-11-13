@@ -20,11 +20,10 @@ class Lesson(models.Model):
     title = models.CharField(max_length=50)
     file = models.FileField(upload_to='course/files', max_length=100,blank=True)
     text = models.TextField()
-    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE)
-
+    lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, related_name='lessons_lecture')
     class Meta:
         verbose_name = ("Lesson")
         verbose_name_plural = ("Lessons")
 
     def __str__(self):
-        return self.name
+        return self.title

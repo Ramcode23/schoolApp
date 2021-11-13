@@ -1,12 +1,13 @@
 from ..course.models import Course
+from django.db.models import Count
 from rest_framework.generics import  get_object_or_404
 
 from ..user.permission import IsAdminStudent,IsAdminTeacher,IsAdminUser
 from .serializers import( LectureSerializer,
                          LectureInsertSerializer,
-                         LectureUpdatetSerializer, LessonListSerializer, 
-                         LessonSerializer, 
-                         LessonUpsertSerializer)
+                         LectureUpdatetSerializer, LessonInsertSerializer, LessonListSerializer, 
+                         LessonSerializer, LessonUpdateSerializer, 
+                        )
 from .models import Lecture, Lesson
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -25,7 +26,8 @@ class LectureViewSet(viewsets.ModelViewSet):
     
     def list(self, request):
          print(request.headers['courseId'])
-         queryset =Lecture.objects.filter(course__id=request.headers['courseId'])
+         obj=Lecture.objects.filter(course__id=request.headers['courseid'])
+         queryset =Lecture.objects.filter(course__id=request.headers['courseid'])
          serializer = LectureSerializer(queryset, many=True)
          return Response(serializer.data)
           
@@ -43,7 +45,6 @@ class LectureViewSet(viewsets.ModelViewSet):
   
 
     def retrieve(self, request, pk=None):
-        print(pk,'*********')
         queryset =  queryset =Lecture.objects.all()
         lecture =get_object_or_404(queryset, pk=pk)
         serializer = LectureSerializer(lecture)
@@ -83,32 +84,40 @@ class LessonViewSet(viewsets.ModelViewSet):
     authentication_classes=[TokenAuthentication]
     
     def list(self, request):
-         queryset =Lesson.objects.filter(lecture__id=request.headers['lectureId'])
+         """ Lesson  order by Lecture """
+         queryset =Lesson.objects.filter(lecture__course__id=request.headers['courseId']).annotate(Count('lecture')).order_by('lecture')
          serializer = LessonListSerializer(queryset, many=True)
          return Response(serializer.data)
           
 
     def create(self, request):
-        serializer = LessonUpsertSerializer(data=request.data)
+        serializer = LessonInsertSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         lesson = Lesson.objects.create(
             
         lecture=Lecture.objects.get(pk=serializer.validated_data['lecture']),
         title= serializer.validated_data['title'] ,
-        file= serializer.validated_data['file'] 
-        
+        file= serializer.validated_data['file'] ,
+        text=serializer.validated_data['text']
         )
         lesson.save()
         return Response(serializer.data) 
 
-  
+    def update(self, request, pk=None):
+         serializer = LessonUpdateSerializer(data=request.data)
+         serializer.is_valid(raise_exception=True)
+         lesson = Lesson.objects.get(pk=pk)
+         lesson.title=serializer.validated_data['title']
+         lesson.file=serializer.validated_data['file']
+         lesson.text=serializer.validated_data['text']
+         lesson.save() 
+         return Response(serializer.data) 
 
     def retrieve(self, request, pk=None):
-        print(pk,'*********')
         queryset =  queryset =Lesson.objects.all()
         lesson =get_object_or_404(queryset, pk=pk)
-        serializer = LectureSerializer(lesson)
+        serializer = LessonSerializer(lesson)
         return Response(serializer.data)
     
     

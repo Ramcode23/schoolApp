@@ -17,7 +17,6 @@ from .serializers import( CourseSerializer,
 from ..user.permission import IsAdminStudent, IsAdminTeacher
 from rest_framework.pagination import PageNumberPagination
 
-
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 100
     page_size_query_param = 'page_size'
@@ -26,6 +25,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class CouseViewSet(viewsets.ModelViewSet):
+   
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     authentication_classes = [TokenAuthentication]
