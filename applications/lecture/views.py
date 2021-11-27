@@ -94,11 +94,13 @@ class LessonViewSet(viewsets.ModelViewSet):
         serializer = LessonInsertSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        print(self.request.data.get('lecture'))
+        print(serializer.validated_data['lecture'])
         lesson = Lesson.objects.create(
-            
+
         lecture=Lecture.objects.get(pk=serializer.validated_data['lecture']),
         title= serializer.validated_data['title'] ,
-        file= serializer.validated_data['file'] ,
+        file= serializer.validated_data['file'] if self.request.data.get('file') else None,
         text=serializer.validated_data['text']
         )
         lesson.save()
@@ -109,7 +111,9 @@ class LessonViewSet(viewsets.ModelViewSet):
          serializer.is_valid(raise_exception=True)
          lesson = Lesson.objects.get(pk=pk)
          lesson.title=serializer.validated_data['title']
-         lesson.file=serializer.validated_data['file']
+         
+         if self.request.data.get('file'):
+            lesson.file=serializer.validated_data['file']
          lesson.text=serializer.validated_data['text']
          lesson.save() 
          return Response(serializer.data) 

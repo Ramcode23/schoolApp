@@ -18,7 +18,7 @@ class Lecture(models.Model):
 
 class Lesson(models.Model):
     title = models.CharField(max_length=50)
-    file = models.FileField(upload_to='course/files', max_length=100,blank=True)
+    file = models.FileField(upload_to='course/files', null=True)
     text = models.TextField()
     lecture = models.ForeignKey(Lecture, on_delete=models.CASCADE, related_name='lessons_lecture')
     class Meta:

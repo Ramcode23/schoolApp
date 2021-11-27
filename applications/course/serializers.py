@@ -22,7 +22,7 @@ class CourseUpsertSerializer(serializers.Serializer):
         
 class EnrollmentSerializer(serializers.ModelSerializer):
     student = UserSerializer()
-
+    course=CourseSerializer()
     class Meta:
         model = Enrollment
         fields = [

@@ -1,4 +1,5 @@
 
+
 from .models import Lecture,Lesson
 from ..course.serializers import CourseSerializer
 from rest_framework import serializers
@@ -65,13 +66,13 @@ class LessonInsertSerializer(serializers.Serializer):
       lecture = serializers.IntegerField()
       title=serializers.CharField()
       text=serializers.CharField()
-      file=serializers.FileField()
+      file=serializers.FileField(allow_empty_file=False, required=False )
       
   
 class LessonUpdateSerializer(serializers.Serializer):
       lecture = serializers.IntegerField()
       title=serializers.CharField()
       text=serializers.CharField()
-      file=serializers.FileField()
+      file=serializers.FileField(allow_empty_file=False, required=False )
       
                                             
