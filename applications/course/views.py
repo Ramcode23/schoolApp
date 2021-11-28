@@ -32,7 +32,7 @@ class CouseViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def list(self, request):
-        queryset = Course.objects.all()
+        queryset = Course.objects.filter(teacher=self.request.user)
         serializer = CourseSerializer(queryset, many=True)
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -74,9 +74,9 @@ class CouseViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             permission_classes = [IsAdminTeacher]
         elif self.action == 'list':
-             permission_classes = [IsAuthenticated]
+             permission_classes = [IsAdminTeacher]
         elif self.action == 'retrieve':
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAdminTeacher]
         elif self.action == 'update' or self.action == 'partial_update':
             permission_classes = [IsAdminUser]
         elif self.action == 'destroy':
