@@ -10,7 +10,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated,IsAdminUser
 from .permission import  IsLoggedInUserOrAdmin, IsAdminOrAnonymousUser
 from .models import User
 from .serializers import UserSerializer
-
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from .serializers import UserLoginSerializer
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
@@ -18,7 +22,8 @@ class UserViewSet(ModelViewSet):
 
     def get_authenticators(self):
        if  self.request.method!='POST':
-          self.authentication_classes.append(TokenAuthentication)
+          self.authentication_classes.append(JSONWebTokenAuthentication)
+          
        return [auth() for auth in self.authentication_classes]
 
     def get_permissions(self):
@@ -45,4 +50,20 @@ class LogoutView(APIView):
         return Response(status=status.HTTP_200_OK)
     
     
-    
+class UserLoginView(RetrieveAPIView):
+
+    permission_classes = (AllowAny,)
+    serializer_class = UserLoginSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        response = {
+            'success' : 'True',
+            'status code' : status.HTTP_200_OK,
+            'message': 'User logged in  successfully',
+            'token' : serializer.data['token'],
+            }
+        status_code = status.HTTP_200_OK
+
+        return Response(response, status=status_code)    

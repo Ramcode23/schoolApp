@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework.response import Response
 
 # Create your views here.
@@ -16,7 +16,7 @@ from .serializers import( CourseSerializer,
                          PaginationSerializer)
 from ..user.permission import IsAdminStudent, IsAdminTeacher
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 100
     page_size_query_param = 'page_size'
@@ -28,7 +28,7 @@ class CouseViewSet(viewsets.ModelViewSet):
    
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
 
     def list(self, request):
@@ -88,12 +88,22 @@ class CourseListAPIView(ListAPIView):
       queryset = Course.objects.all()
       serializer_class = CourseSerializer
       pagination_class=StandardResultsSetPagination
-      authentication_classes = [TokenAuthentication]
+      authentication_classes = [JSONWebTokenAuthentication]
+
+ 
+class CourseRetrieveAPIView(RetrieveAPIView):
+     queryset = Course.objects.all()
+     serializer_class = CourseSerializer
+     authentication_classes = [JSONWebTokenAuthentication]
+    
+ 
+ 
+      
       
  
 class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset = Enrollment.objects.all()
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
     pagination_class = StandardResultsSetPagination
     
     
